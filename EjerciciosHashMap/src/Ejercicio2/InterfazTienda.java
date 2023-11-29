@@ -1,4 +1,4 @@
-package Ejercicio1;
+package Ejercicio2;
 
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -11,16 +11,19 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class Interfaz {
+public class InterfazTienda {
 
-	public JFrame frame;
-	static Map<Integer, Estudiante> list = new HashMap<Integer, Estudiante>();
-
+	private JFrame frame;
+	static Map<Integer, Producto> list = new HashMap<Integer, Producto>();
+	
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Interfaz window = new Interfaz();
+					InterfazTienda window = new InterfazTienda();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -29,87 +32,97 @@ public class Interfaz {
 		});
 	}
 
-	public Interfaz() {
+	/**
+	 * Create the application.
+	 */
+	public InterfazTienda() {
 		initialize();
 	}
 
+	/**
+	 * Initialize the contents of the frame.
+	 */
 	private void initialize() {
-		frame = new JFrame("Menú con Botones");
+		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
-
+		
 		JButton botonAñadir = new JButton("Añadir");
 		JButton botonListar = new JButton("Listar");
-		JButton botonCorregir = new JButton("Corregir");
+		JButton botonVender = new JButton("Vender");
 		JButton botonEliminar = new JButton("Eliminar");
-
+		
 		botonAñadir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id;
 				String nombre;
-				double nota;
+				int stock;
 
 				try {
-					id = Integer.parseInt(JOptionPane.showInputDialog(frame, "Introduce el ID del estudiante:"));
-					nombre = JOptionPane.showInputDialog(frame, "Introduce el nombre del estudiante:");
-					nota = Double.parseDouble(JOptionPane.showInputDialog(frame, "Introduce la nota del estudiante:"));
+					id = Integer.parseInt(JOptionPane.showInputDialog(frame, "Introduce el ID del producto:"));
+					nombre = JOptionPane.showInputDialog(frame, "Introduce el nombre del producto:");
+					stock = Integer.parseInt(JOptionPane.showInputDialog(frame, "Introduce el stock del producto:"));
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(frame, "Error: Ingresa datos válidos.");
 					return;
 				}
 
-				NotasEstudiantes.añadir(list, id, nombre, nota, frame);
+				CRUDTienda.añadir(list, id, nombre, stock, frame);
 			}
 		});
-
+		
+		
 		botonListar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NotasEstudiantes.listar(list, frame);
+				CRUDTienda.listar(list, frame);
 			}
 		});
-
-		botonCorregir.addActionListener(new ActionListener() {
+		
+		
+		botonVender.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id;
-				double nuevaNota;
+				int cantAVender;
 
 				try {
-					id = Integer.parseInt(JOptionPane.showInputDialog(frame, "Introduce la ID del alumno a corregir:"));
-					nuevaNota = Double.parseDouble(JOptionPane.showInputDialog(frame, "Introduce la nueva nota:"));
+					id = Integer.parseInt(JOptionPane.showInputDialog(frame, "Introduce la ID del producto a vender:"));
+					cantAVender = Integer.parseInt(JOptionPane.showInputDialog(frame, "Introduce la cantidad vendida:"));
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(frame, "Error: Ingresa datos válidos.");
 					return;
 				}
 
-				NotasEstudiantes.corregir(list, frame, id, nuevaNota);
+				CRUDTienda.vender(list, frame, id, cantAVender);
 			}
 		});
-
+		
 		botonEliminar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id;
 
 				try {
-					id = Integer.parseInt(JOptionPane.showInputDialog(frame, "Introduce la ID del alumno a eliminar:"));
+					id = Integer.parseInt(JOptionPane.showInputDialog(frame, "Introduce la ID del producto a eliminar:"));
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(frame, "Error: Ingresa un ID válido.");
 					return;
 				}
 
-				NotasEstudiantes.eliminar(list, id, frame);
+				CRUDTienda.eliminar(list, id, frame);
 			}
 		});
-
+		
 		frame.add(botonAñadir);
 		frame.add(botonListar);
-		frame.add(botonCorregir);
+		frame.add(botonVender);
 		frame.add(botonEliminar);
 
 		frame.setVisible(true);
+		
 	}
+
 }
